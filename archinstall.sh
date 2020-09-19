@@ -79,7 +79,7 @@ echo \"\$NAME password\"
 until passwd \$NAME; do :; done
 
 # change this to your wm
-WINDOW_MANAGER=i3
+WINDOW_MANAGER=i3-gaps
 
 # change this to your terminal
 TERMINAL=kitty
@@ -92,9 +92,9 @@ EXTRA_PKGS=git
 
 pacman -Syu --noconfirm \
 	xorg sudo base-devel\
-	git \
+	git curl \
 	networkmanager \
-	lightdm lightdm-gtk-greeter \
+	lightdm lightdm-gtk-greeter feh\
 	\$EXTRA_PKGS \
 	\$WINDOW_MANAGER \$TERMINAL \$BROWSER
 
@@ -117,9 +117,17 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 echo \"%wheel ALL=(ALL) ALL\" >> /etc/sudoers
 
+# set this to an url of the wallpaper
+WALLPAPER=\"\"
+
+curl \$WALLPAPER -o /home/\$NAME/.wallpaper.png
+
 # change this to yours X keymap
 X_KEY_MAP=cz
-echo \"setxkbmap \$X_KEY_MAP\" >> /home/\$NAME/.xprofile
+echo \"
+setxkbmap \$X_KEY_MAP
+feh --bg-fill ~/.wallpaper.png
+\" >> /home/\$NAME/.xprofile
 
 printf \"\\033[0;32mSCRIPT FINISHED\\033[0m\\n\"
 "
