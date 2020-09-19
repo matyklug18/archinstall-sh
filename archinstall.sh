@@ -69,14 +69,14 @@ echo \"
 \" >> /etc/hosts
 
 echo \"root password\"
-until passwd; do :; done
+until passwd; do echo \"ERROR\n\"; done
 
 # change this to your username
 NAME=matyk
 
 useradd -G wheel -m \$NAME
 echo \"\$NAME password\"
-until passwd \$NAME; do :; done
+until passwd \$NAME; do echo \"ERROR\n\"; done
 
 # change this to your wm
 WINDOW_MANAGER=i3-gaps
@@ -87,8 +87,11 @@ TERMINAL=kitty
 # change this to your browser
 BROWSER=firefox
 
+# change this to your editor
+TEXT_EDITOR=neovim
+
 # add extra packages here
-EXTRA_PKGS=git
+EXTRA_PKGS=
 
 pacman -Syu --noconfirm \
 	xorg sudo base-devel\
@@ -96,7 +99,7 @@ pacman -Syu --noconfirm \
 	networkmanager \
 	lightdm lightdm-gtk-greeter feh\
 	\$EXTRA_PKGS \
-	\$WINDOW_MANAGER \$TERMINAL \$BROWSER
+	\$WINDOW_MANAGER \$TERMINAL \$BROWSER \$TEXT_EDITOR
 
 su \$NAME
 cd
@@ -118,7 +121,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 echo \"%wheel ALL=(ALL) ALL\" >> /etc/sudoers
 
 # set this to an url of the wallpaper
-WALLPAPER=\"\"
+WALLPAPER=\"https://wallpaperset.com/w/full/2/3/3/277584.jpg\"
 
 curl \$WALLPAPER -o /home/\$NAME/.wallpaper.png
 
