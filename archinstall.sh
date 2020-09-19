@@ -63,7 +63,7 @@ HOSTNAME=matyk
 echo \$HOSTNAME >> /etc/hostname
 
 echo \"
-127.0.0.1	localhost
+127.0.0.1 localhost
 ::1       localhost
 127.0.1.1 \$HOSTNAME.localdomain \$HOSTNAME
 \" >> /etc/hosts
@@ -84,7 +84,28 @@ WINDOW_MANAGER=i3
 # change this to your terminal
 TERMINAL=kitty
 
-pacman -Syu --noconfirm xorg sudo networkmanager lightdm lightdm-gtk-greeter \$WINDOW_MANAGER \$TERMINAL
+# change this to your browser
+BROWSER=firefox
+
+# add extra packages here
+EXTRA_PKGS=git
+
+pacman -Syu --noconfirm \
+	xorg sudo base-devel\
+	git \
+	networkmanager \
+	lightdm lightdm-gtk-greeter \
+	\$EXTRA_PKGS \
+	\$WINDOW_MANAGER \$TERMINAL \$BROWSER
+
+su \$NAME
+cd
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+cd ..
+rm -r ./yay
+exit
 
 systemctl enable NetworkManager
 systemctl enable lightdm
